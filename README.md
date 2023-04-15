@@ -1,5 +1,7 @@
 # Astro Starter Kit: Basics
 
+**Can be viewed at [https://jwoodrow99.github.io/homepage/](https://jwoodrow99.github.io/homepage/)**
+
 ```
 npm create astro@latest -- --template basics
 ```
