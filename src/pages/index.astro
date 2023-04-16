@@ -5,8 +5,9 @@ import { Icon } from 'astro-icon'
 
 <Layout title="Jack's Homepage">
 	<main class="w-screen h-screen bg-slate-900 flex flex-col content-center">
-    <div class="flex flex-row content-center justify-end py-2 px-5">
-      <p id="weather_temp" class="text-white text-3xl text-end">0°</p>
+    <div class="flex flex-col content-center justify-end py-2 px-5">
+      <p id="weather_temp" class="text-white text-3xl text-end">0℃</p>
+      <p id="weather_description" class="text-white text-xl text-end"></p>
     </div>
     <div class="my-auto space-y-8">
       <div class="flex flex-col content-center">
@@ -79,37 +80,39 @@ import { Icon } from 'astro-icon'
     const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${config.geo.latitude}&longitude=${config.geo.longitude}&current_weather=${true}`);
     const jsonData = await response.json();
 
-    document.getElementById('weather_temp').innerHTML = `${Math.round(jsonData.current_weather.temperature)}°`;
+    document.getElementById('weather_temp').innerHTML = `${Math.round(jsonData.current_weather.temperature)}℃`;
 
-    const weatherCodeIcon = {
-      0: 'weather-sunny',
-      1: 'weather-sunny',
-      2: 'weather-partly-cloudy',
-      3: 'weather-partly-cloudy',
-      45: 'weather-fog',
-      48: 'weather-fog',
-      51: 'weather-rainy',
-      53: 'weather-rainy',
-      55: 'weather-rainy',
-      56: 'weather-snowy-rainy',
-      67: 'weather-snowy-rainy',
-      61: 'weather-pouring',
-      63: 'weather-pouring',
-      65: 'weather-pouring',
-      66: 'weather-snowy-rainy',
-      67: 'weather-snowy-rainy',
-      71: 'weather-snowy',
-      73: 'weather-snowy-heavy',
-      75: 'weather-snowy-heavy',
-      77: 'weather-snowy-heavy',
-      80: 'weather-pouring',
-      81: 'weather-pouring',
-      82: 'weather-pouring',
-      85: 'weather-snowy',
-      86: 'weather-snowy',
-      95: 'weather-lightning',
-      96: 'weather-lightning-rainy',
-      99: 'weather-lightning-rainy',
+    const weatherCodeMeaning = {
+      0: 'Clear sky',
+      1: 'Mainly clear',
+      2: 'Partly cloudy',
+      3: 'Overcast',
+      45: 'Fog',
+      48: 'Depositing rime fog',
+      51: 'Light drizzle',
+      53: 'Moderate drizzle',
+      55: 'Dense drizzle',
+      56: 'Light freezing Drizzle',
+      57: 'Dense freezing Drizzle',
+      61: 'Slight rain',
+      63: 'Moderate rain',
+      65: 'Heavy rain',
+      66: 'Light freezing Rain',
+      67: 'Heavy freezing Rain',
+      71: 'Light snow fall',
+      73: 'Moderate snow fall',
+      75: 'Heavy snow fall',
+      77: 'Snow grains',
+      80: 'Slight rain showers',
+      81: 'Moderate rain showers',
+      82: 'Violent rain showers',
+      85: 'Slight snow showers',
+      86: 'Heavy snow showers',
+      95: 'Slight thunderstorm',
+      96: 'Moderate thunderstorm',
+      99: 'Thunderstorm & Hail',
     }
+
+    document.getElementById('weather_description').innerHTML = `${weatherCodeMeaning[jsonData.current_weather.weathercode]}`;
   })();
 </script>
