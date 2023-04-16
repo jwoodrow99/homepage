@@ -1,0 +1,66 @@
+---
+export interface Props {}
+const { } = Astro.props;
+
+import { Icon } from 'astro-icon'
+---
+
+<div id="notes_component" class="w-full h-full">
+  <div class="flex flex-row justify-between px-4 py-2 bg-slate-950 text-slate-500 rounded-t-lg">
+    <button id="note_btn_0" class="hover:text-slate-300 text-slate-300" onclick="selectNote(0)">Note 1</button>
+    <button id="note_btn_1" class="hover:text-slate-300" onclick="selectNote(1)">Note 2</button>
+    <button id="note_btn_2" class="hover:text-slate-300" onclick="selectNote(2)">Note 3</button>
+    <button id="note_btn_3" class="hover:text-slate-300" onclick="selectNote(3)">Note 4</button>
+    <button id="note_btn_4" class="hover:text-slate-300" onclick="selectNote(4)">Note 5</button>
+  </div>
+  <textarea id="note_input" placeholder="Write note here..." class="w-full h-full px-3 py-2 rounded-b-lg bg-slate-950 text-slate-500"></textarea>
+  <div>
+    <Icon id="notes_save" name="mdi:loading" class="animate-spin text-slate-500	w-5 hidden" />
+    <p id="notes_saved" class="text-slate-500	 text-xs italic">Saved!</p>
+  </div>
+</div>
+
+<script defer lang="js">
+    // Reade note
+    let configNotes = JSON.parse(localStorage.getItem("config_notes"));
+    let noteIndex = 0;
+
+    // If does not exist, create
+    if(!configNotes){
+      configNotes = {
+        notes: ['', '', '', '', '']
+      }
+      localStorage.setItem('config_note', JSON.stringify(configNotes));
+    } else {
+      configNotes = JSON.parse(localStorage.getItem("config_notes"))
+      document.getElementById('note_input').value = configNotes.notes[noteIndex]
+    }
+
+  document.getElementById('note_input').addEventListener('input', (event) => {
+    document.getElementById('notes_save').style.display = "block";
+    document.getElementById('notes_saved').style.display = "none";
+
+    setTimeout(() => {
+      document.getElementById('notes_save').style.display = "none";
+      document.getElementById('notes_saved').style.display = "block";
+    }, 1000);
+
+    configNotes.notes[noteIndex] = event.target.value
+    localStorage.setItem('config_notes', JSON.stringify(configNotes));
+  })
+
+  const selectNote = (selectedNoteindex) => {
+    document.getElementById(`note_btn_${noteIndex}`).classList.toggle('text-slate-300');
+    document.getElementById(`note_btn_${selectedNoteindex}`).classList.toggle('text-slate-300');
+    document.getElementById('note_input').value = configNotes.notes[selectedNoteindex];
+
+    noteIndex = selectedNoteindex;
+  }
+</script>
+
+<style>
+  textarea {
+    resize: none;
+    outline: none;
+  }
+</style>

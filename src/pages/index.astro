@@ -1,25 +1,31 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { Icon } from 'astro-icon'
+
+import Clock from '../components/Clock.astro';
+import Search from '../components/Search.astro';
+import Weather from '../components/Weather.astro';
+import Notes from '../components/Notes.astro';
 ---
 
 <Layout title="Jack's Homepage">
 	<main class="w-screen h-screen bg-slate-900 flex flex-row p-5">
 
-    <div class="basis-1/4"></div>
-
-    <div class="basis-2/4 flex flex-col my-auto space-y-5 px-5">
-      <div id="clock" class="text-white font-ps text-center text-7xl font-bold">-</div>
-      <input id="search" type="text" class="w-full mx-auto rounded-full px-4 py-1" oninput="searchPredictions()">
-      <select name="serachEngines" id="serachEngines" class="w-min mx-auto">
-        <option value="duckduckgo">DuckDuckGo</option>
-        <option value="google">Google</option>
-      </select>
+    <div class="basis-3/12">
     </div>
 
-    <div class="basis-1/4">
-      <p id="weather_temp" class="text-white text-3xl text-end">0℃</p>
-      <p id="weather_description" class="text-white text-xl text-end"></p>
+    <div class="basis-6/12 flex flex-col my-auto space-y-16 px-5">
+      <div class="flex flex-col space-y-5">
+        <Clock></Clock>
+        <Search></Search>
+      </div>
+      <div class="h-[25vh]">
+        <Notes></Notes>
+      </div>
+      
+    </div>
+
+    <div class="basis-3/12">
+      <Weather></Weather>
     </div>
 
 	</main>
@@ -27,89 +33,4 @@ import { Icon } from 'astro-icon'
 
 <script defer lang="js">
 
-  // Main function
-  (() => {
-      let config = JSON.parse(localStorage.getItem("config"));
-
-      if(!config){
-        config = {};
-
-        navigator.geolocation.getCurrentPosition((position) => {
-          const {latitude, longitude} = position.coords;
-          config.geo = {latitude, longitude};
-          localStorage.setItem('config', JSON.stringify(config));
-      })
-    };
-  })();
-
-  // Clock
-  const setClock = () => {
-    const now = new Date();
-    const [time, period] = now.toLocaleTimeString().split(' ');
-    const [h, m, s] = time.split(':');
-    document.getElementById('clock').innerHTML = `${h}:${m} ${period}`;
-  }
-
-  setClock();
-
-  setInterval(() => {
-    setClock();
-  }, 1000);
-
-  // Search event
-  document.addEventListener('keypress', function (event) {
-    if (event.key === 'Enter') {
-
-      const serachEngine = document.getElementById('serachEngines').value;
-      const searchQuery = document.getElementById('search').value.replace(" ", "+");
-
-      if(serachEngine == "duckduckgo"){
-        window.location.href = `https://duckduckgo.com/?q=${searchQuery}`;
-      } else if (serachEngine == "google"){
-        window.location.href = `https://www.google.com/search?q=${searchQuery}`;
-      }
-    }
-  });
-
-  // Weather forcast
-  (async () => {
-    const config = JSON.parse(localStorage.getItem("config"));
-    const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${config.geo.latitude}&longitude=${config.geo.longitude}&current_weather=${true}`);
-    const jsonData = await response.json();
-
-    document.getElementById('weather_temp').innerHTML = `${Math.round(jsonData.current_weather.temperature)}℃`;
-
-    const weatherCodeMeaning = {
-      0: 'Clear sky',
-      1: 'Mainly clear',
-      2: 'Partly cloudy',
-      3: 'Overcast',
-      45: 'Fog',
-      48: 'Depositing rime fog',
-      51: 'Light drizzle',
-      53: 'Moderate drizzle',
-      55: 'Dense drizzle',
-      56: 'Light freezing Drizzle',
-      57: 'Dense freezing Drizzle',
-      61: 'Slight rain',
-      63: 'Moderate rain',
-      65: 'Heavy rain',
-      66: 'Light freezing Rain',
-      67: 'Heavy freezing Rain',
-      71: 'Light snow fall',
-      73: 'Moderate snow fall',
-      75: 'Heavy snow fall',
-      77: 'Snow grains',
-      80: 'Slight rain showers',
-      81: 'Moderate rain showers',
-      82: 'Violent rain showers',
-      85: 'Slight snow showers',
-      86: 'Heavy snow showers',
-      95: 'Slight thunderstorm',
-      96: 'Moderate thunderstorm',
-      99: 'Thunderstorm & Hail',
-    }
-
-    document.getElementById('weather_description').innerHTML = `${weatherCodeMeaning[jsonData.current_weather.weathercode]}`;
-  })();
 </script>

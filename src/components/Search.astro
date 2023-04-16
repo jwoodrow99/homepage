@@ -1,0 +1,36 @@
+---
+export interface Props {}
+const { } = Astro.props;
+---
+
+<div id="search_component flex flex-col justify-center">
+  <input id="search" type="text" class="w-full rounded-full px-4 py-1">
+  <div class="flex flex-row justify-center mt-2">
+    <select name="serachEngines" id="serachEngines" class="w-min">
+      <option value="duckduckgo">DuckDuckGo</option>
+      <option value="google">Google</option>
+    </select>
+  </div>
+</div>
+
+<script defer lang="js">
+  document.getElementById('search').addEventListener('keypress', function (event) {
+    if (event.key === 'Enter') {
+
+      const serachEngine = document.getElementById('serachEngines').value;
+      const searchQuery = document.getElementById('search').value.replace(" ", "+");
+
+      if(serachEngine == "duckduckgo"){
+        window.location.href = `https://duckduckgo.com/?q=${searchQuery}`;
+      } else if (serachEngine == "google"){
+        window.location.href = `https://www.google.com/search?q=${searchQuery}`;
+      }
+    }
+  });
+</script>
+
+<style>
+  input {
+    outline: none;
+  }
+</style>

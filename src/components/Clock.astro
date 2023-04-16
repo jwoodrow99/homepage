@@ -1,0 +1,23 @@
+---
+export interface Props {}
+const { } = Astro.props;
+---
+
+<div id="clock_component">
+  <div id="clock" class="text-white font-ps text-center text-7xl font-bold"></div>
+</div>
+
+<script defer lang="js">
+  const setClock = () => {
+    const now = new Date();
+    const [time, period] = now.toLocaleTimeString().split(' ');
+    const [h, m, s] = time.split(':');
+    document.getElementById('clock').innerHTML = `${h}:${m} ${period}`;
+  }
+
+  setClock();
+
+  setInterval(() => {
+    setClock();
+  }, 1000);
+</script>
