@@ -9,6 +9,7 @@ const { } = Astro.props;
     <select name="serachEngines" id="serachEngines" class="w-min">
       <option value="duckduckgo">DuckDuckGo</option>
       <option value="google">Google</option>
+      <option value="youtube">YouTube</option>
     </select>
   </div>
 </div>
@@ -24,6 +25,8 @@ const { } = Astro.props;
         window.location.href = `https://duckduckgo.com/?q=${searchQuery}`;
       } else if (serachEngine == "google"){
         window.location.href = `https://www.google.com/search?q=${searchQuery}`;
+      } else if (serachEngine == "youtube"){
+        window.location.href = `https://www.youtube.com/results?search_query=${searchQuery}`;
       }
     }
   });
