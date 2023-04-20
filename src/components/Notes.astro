@@ -5,18 +5,26 @@ const { } = Astro.props;
 import { Icon } from 'astro-icon'
 ---
 
-<div id="notes_component" class="w-full h-full">
-  <div class="flex flex-row justify-around px-4 py-2 bg-slate-950 text-slate-500 rounded-t-lg">
+<div id="notes_component" class="bg-slate-950 rounded-lg text-slate-500 flex flex-col h-full">
+
+  <div class="basis-1/12 flex flex-row justify-around px-4 py-2">
     <button id="note_btn_0" class="hover:text-slate-300 text-slate-300" onclick="selectNote(0)">Note 1</button>
     <button id="note_btn_1" class="hover:text-slate-300" onclick="selectNote(1)">Note 2</button>
     <button id="note_btn_2" class="hover:text-slate-300" onclick="selectNote(2)">Note 3</button>
     <button id="note_btn_3" class="hover:text-slate-300" onclick="selectNote(3)">Note 4</button>
     <button id="note_btn_4" class="hover:text-slate-300" onclick="selectNote(4)">Note 5</button>
   </div>
-  <textarea id="note_input" placeholder="Write note here..." class="w-full h-full px-3 py-2 rounded-b-lg bg-slate-950 text-slate-500"></textarea>
-  <div>
-    <Icon id="notes_save" name="mdi:loading" class="animate-spin text-slate-500	w-5 hidden" />
-    <p id="notes_saved" class="text-slate-500	 text-xs italic">Saved!</p>
+
+  <div class="h-full">
+    <textarea id="note_input" class="h-full basis-10/12 w-full px-3 py-2 bg-slate-950" placeholder="Write note here..."></textarea>
+  </div>
+  
+  <div class="basis-1/12 flex flex-row justify-between px-3">
+    <div>
+      <Icon id="notes_save" name="mdi:loading" class="animate-spin 	w-5 hidden" />
+      <p id="notes_saved" class="	 text-xs italic">Saved!</p>
+    </div>
+    <div><button class="hover:text-slate-300" onclick="fullscreen()"><Icon name="mdi:fullscreen" class="w-5" /></button></div>
   </div>
 </div>
 
@@ -55,6 +63,10 @@ import { Icon } from 'astro-icon'
     document.getElementById('note_input').value = configNotes.notes[selectedNoteindex];
 
     noteIndex = selectedNoteindex;
+  }
+
+  const fullscreen = () => {
+    console.log('Full Screen');
   }
 </script>
 
